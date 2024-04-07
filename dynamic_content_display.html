@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Destination Submitter</title>
+    <style>
+        #dest_image {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 8px; 
+        }
+        *{
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        body, html {
+            background-color: #f0e4d7;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #home {
+            margin:auto;
+            width: 50%;
+            padding: 10px;
+            background-color: #fff3e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        #hom {
+            margin:auto;
+            width: 50%;
+            padding: 10px;
+            background-color: #fff3e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid #f9a825;
+            border-radius: 4px;
+        }
+
+        #btn1 {
+            background-color: #f9a825;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #btn1:hover {
+            background-color: #c17900;
+        }
+
+        #btn2 {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #btn2:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div id="home">
+        <h2>Dynamic content display</h2>
+    </div>
+    <br>
+    <div id="home" >
+        <h1>Search your destination</h1>
+        <h2 >Where To Next?</h2>
+
+        <form id="form_id" onsubmit="event.preventDefault(); get_image();">
+            <label for="spot">Dream Destination:</label>
+            <input type="text" id="spot" name="spot" placeholder="Enter a magical place..." required>
+            <button type="submit" id="btn1">Whisk Me Away!</button>
+        </form>
+
+        <div id="dest" style="display:none;">
+            <h3 id="magicMessageTitle">Pack Your Bags!</h3>
+            <div>
+              <img id="dest_image" src="" alt="Destination Image">
+            </div>
+            <p id="enchantedMessage"></p>
+            <button id="btn2" onclick="fetchNewImage()">Next Image</button>
+        </div>
+        
+    </div>
+    <script>
+      let currentDestination = '';
+      let imageIndex = 1; 
+      async function get_image() {
+          var spot = document.getElementById("spot").value;
+          currentDestination = spot; 
+          var message = "Whoosh! Off to " + spot + "! Better start packing your imaginary bags for an adventure of a lifetime!";
+          document.getElementById("enchantedMessage").textContent = message;
+          
+          var apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(spot)}&client_id=RbpiBjFQBvyPLjopn4V05NCcQCBkuFamJq_0S9a7zh0`;
+  
+          try {
+              let response = await fetch(apiUrl);
+              if (response.ok) {
+                  let jsonResponse = await response.json();
+                  let imageUrl = jsonResponse.results[0].urls.regular;
+                  document.getElementById("dest_image").src = imageUrl;
+                  document.getElementById("dest_image").alt = "Image of " + spot;
+              } else {
+                  console.error('Failed to load image');
+              }
+          } catch (error) {
+              console.error('Error fetching image:', error);
+          }
+  
+          document.getElementById("dest").style.display = "block";
+      }
+      async function fetchNewImage() {
+          imageIndex++; 
+          var apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(currentDestination)}&client_id=RbpiBjFQBvyPLjopn4V05NCcQCBkuFamJq_0S9a7zh0&page=${imageIndex}`;
+
+          try {
+              let response = await fetch(apiUrl);
+              if (response.ok) {
+                  let jsonResponse = await response.json();
+                  if (jsonResponse.results.length > 0) {
+                      let imageUrl = jsonResponse.results[0].urls.regular;
+                      document.getElementById("dest_image").src = imageUrl;
+                  } else {
+                      console.error('No more images found .');
+                  }
+              } else {
+                  console.error('Failed to load image');
+              }
+          } catch (error) {
+              console.error('Error fetching image:', error);
+          }
+      }
+  </script>
+</body>
+</html>

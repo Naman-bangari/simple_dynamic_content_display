@@ -1,0 +1,2 @@
+# simple_dynamic_content_display
+ simple_dynamic_content_display

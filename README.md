@@ -1,5 +1,7 @@
 # simple_dynamic_content_display
  simple_dynamic_content_display
+
+ 
 this is a example of dynamic content display that show image you search
 
 

@@ -98,11 +98,11 @@
             </form>
 
             <div id="dest" style="display: none;">
-                <h3 id="magicMessageTitle">Pack Your Bags!</h3>
+                <h3 >Pack Your Bags!</h3>
                 <div>
                   <img id="dest_image" src="" alt="Destination Image">
                 </div>
-                <p id="enchantedMessage"></p>
+                <p id="msg"></p>
                 <button class="btn" onclick="fetchNewImage()">Next Image</button>
             </div>
             
@@ -116,7 +116,7 @@
             var spot = document.getElementById("spot").value;
             currentDestination = spot; 
             var message = "Whoosh! Off to " + spot + "! Better start packing your imaginary bags for an adventure of a lifetime!";
-            document.getElementById("enchantedMessage").textContent = message;
+            document.getElementById("msg").textContent = message;
             
             var apiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(spot)}&client_id=RbpiBjFQBvyPLjopn4V05NCcQCBkuFamJq_0S9a7zh0`;
     
